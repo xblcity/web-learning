@@ -4,6 +4,7 @@ import './App.css';
 import PriceList from './components/PriceList'
 import ViewTab from './components/ViewTab'
 import TotalPrice from './components/TotalPrice'
+import MonthPicker from './components/MonthPicker'
 import {LIST_VIEW} from './utility'
 
 const items = [
@@ -46,6 +47,7 @@ class App extends Component {
         items={items}
         onModifyItem={(item) => {alert(item.id)}}
         onDeleteItem={(item) => {alert(item.id)}} /> */}
+        <MonthPicker year={2018} month={9}/>
       </div>
     );
   }
