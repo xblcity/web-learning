@@ -4,20 +4,35 @@ import {padLeft, numberRange} from '../utility'
 
 class MonthPicker extends React.Component {
   state = {
-    isOpen: false
+    isOpen: false,
+    selectedYear: this.props.year
   }
 
   onChangeOpen = () => {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
     })
+  }
+
+  onSetYear = (event, currentYear) => {
+    event.preventDefault()
+    this.setState({
+      selectedYear: currentYear
+    })
+  }
+
+  onSetMonth = (event, currentMonth) => {
+    event.preventDefault()
+    this.setState({
+      isOpen: false
+    })
+    this.props.onChangeSelect(this.state.selectedYear, currentMonth)
   }
   render() {
     const {year, month} = this.props
+    const {selectedYear, isOpen} = this.state
     const yearRange = numberRange(9, 2014)
-    console.log(yearRange)
     const monthRange = numberRange(12, 0)
-    const {isOpen} = this.state
     return (
       <div style={{position: 'relative'}}>
         <h4>选择月份</h4>
@@ -31,7 +46,9 @@ class MonthPicker extends React.Component {
               <div className='col border-right'>
                 {
                   yearRange.map((yearNumber, index) => 
-                    <a href='#' key={index} className={(yearNumber === year) ? 'dropdown-item active': 'dropdown-item'}>
+                    <a href='#' key={index} 
+                    onClick={(e) => {this.onSetYear(e, yearNumber)}}
+                    className={(yearNumber === selectedYear) ? 'dropdown-item active': 'dropdown-item'}>
                       {yearNumber}年
                     </a>
                   )
@@ -40,7 +57,9 @@ class MonthPicker extends React.Component {
               <div className='col'>
                 {
                   monthRange.map((monthNumber, index) => 
-                    <a href='#' key={index} className={(monthNumber === month) ? 'dropdown-item active': 'dropdown-item'}>
+                    <a href='#' key={index} 
+                      onClick={(e) => {this.onSetMonth(e, monthNumber)}}
+                      className={(monthNumber === month) ? 'dropdown-item active': 'dropdown-item'}>
                       {padLeft(monthNumber)}月
                     </a>
                   )

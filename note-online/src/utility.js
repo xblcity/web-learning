@@ -1,5 +1,7 @@
 export const LIST_VIEW = 'list'
 export const CHART_VIEW = 'chart'
+export const OUT_COME = 'outcome'
+export const IN_COME = 'income'
 
 export const padLeft = (n) => {
   return n < 10 ? ('0'+n) : n
@@ -11,4 +13,8 @@ export const numberRange = (length, start=0) => {
     arr.push(i)
   }
   return arr
+}
+
+export const parseDateToYearAndMonth = (str) => {
+  
 }
