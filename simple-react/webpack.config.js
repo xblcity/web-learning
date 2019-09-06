@@ -17,5 +17,16 @@ module.exports = {
         loader: 'babel-loader'
       }
     ]
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      name: false,
+      cacheGroups: {
+        vendors: {
+          filename: 'vendors.js'
+        }
+      }
+    }
   }
 }

@@ -54,7 +54,7 @@ const ReactDOM = {
  */
 function render(vdom, container) {
   if (_.isString(vdom) || _.isNumber(vdom)) {
-    container.innerText = container.innerText + vdom
+    container.innerText = container.innerText + vdom // ????
     return
   }
   const dom = document.createElement(vdom.nodeName)  // 根节点创建一个<div>DOM节点
