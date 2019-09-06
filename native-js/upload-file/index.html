@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>uploadFile</title>
+</head>
+
+<body>
+  <input type="file" id="upload-file">
+  <script>
+    var target = document.getElementById('upload-file')
+    function handleEvent(event) {
+      var data = new FormData()
+      files = target.files // 文件DOM元素有一个files属性，获取当前文件的信息
+      var i = 0;
+      while (i < files.length) {
+        data.append("file" + i, files[i])
+        i++
+      }
+      var xhr = new XMLHttpRequest()
+      xhr.open("post", "https://www.mocky.io/v2/5cc8019d300000980a055e76", true)
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          alert(xhr.responseText)
+        }
+      }
+      // 监听上传文件的进度
+      xhr.upload.onprogress = function (event) {
+        if (event.lengthComputable) {
+          var complete = (event.loaded / event.total * 100 | 0)
+          console.log(complete)
+        }
+      }
+      xhr.send(data)
+    }
+    target.addEventListener('change', handleEvent)
+  </script>
+</body>
+
+</html>
