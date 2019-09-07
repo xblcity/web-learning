@@ -10,7 +10,7 @@
     [
       "@babel/preset-react",
       {
-        "pragma": "React.createElement"
+        "pragma": "React.createElement" // default pragma is React.createElement
       }
     ]
   ]

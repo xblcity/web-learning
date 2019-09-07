@@ -1,19 +1,38 @@
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   entry: {
-    app: './src/test'
+    test1: './src/test1',
+    test2: './src/test2',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'simpleReact.js'
+    filename: '[name].[hash:4].js'
   },
   mode: 'development',
   devtool: 'inline-source-map',
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      filename: 'test1.html',
+      title: 'simple-react',
+      chunks: ['vendors', 'test1']
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      filename: 'test2.html',
+      title: 'simple-react',
+      chunks: ['test2', 'vendors']
+    }),
+    new CleanWebpackPlugin()
+  ],
   module: {
     rules: [
       {
         test: /\.js/,
+        exclude: /node_modules/,
         loader: 'babel-loader'
       }
     ]
@@ -21,10 +40,14 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: 'all',
-      name: false,
+      name: 'vendors',
+      minSize: 30000,
+      maxSize: 0,
       cacheGroups: {
         vendors: {
-          filename: 'vendors.js'
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
         }
       }
     }
