@@ -115,6 +115,7 @@ function setAttribute(dom, attr, value) {
 class A extends Component {
   constructor(props) {
     super(props)
+    console.log(`props`, props)
     this.state = {
       count: 1
     }
