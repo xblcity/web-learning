@@ -27,7 +27,7 @@ const element = (
   </div>
 )
 
-// @babel/preset-react转换的结果
+// @babel/preset-react转换的结果, element(即jsx表示的节点)会被@babel/preset-react转换成virtual node
 // var element = React.createElement("div", {
 //   className: "title"
 // }, "hello", React.createElement("span", {
@@ -36,7 +36,6 @@ const element = (
 
 // 经过createElement转换的结果打印
 console.log(element)
-// element(即jsx表示的节点)会被babel-preset-react转换成virtual node
 // 在浏览器中打印如下：
 // {
 //   attributes: { className: "title" }
