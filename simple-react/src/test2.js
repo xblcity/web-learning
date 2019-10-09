@@ -16,11 +16,6 @@ function createElement(tag, attr, ...child) {
   }
 }
 
-function Component(props) {
-  this.props = props
-  this.state = this.state || {}
-}
-
 // jsx语法
 const A = () => <div>i am componentA</div>
 
@@ -78,7 +73,7 @@ function render(vdom, container) {
     // nodeName: "div"
     return
   }
-  const dom = document.createElement(vdom.nodeName)  // 根节点创建一个vNode根节点的tagName
+  const dom = document.createElement(vdom.nodeName)  // 根节点创建一个vNode根节点的tagName，即<div></div>
 
   container.appendChild(dom)
 }

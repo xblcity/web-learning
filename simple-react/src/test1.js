@@ -72,13 +72,13 @@ function render(vdom, container) {
     container.innerText = container.innerText + vdom // ????
     return
   }
-  const dom = document.createElement(vdom.nodeName)  // 根节点创建一个vNode根节点的tagName
+  const dom = document.createElement(vdom.nodeName)  // 根节点创建一个vNode根节点的tagName,即<div></div>
   for (let attr in vdom.attributes) {
     setAttribute(dom, attr, vdom.attributes[attr])
     // 示例
     // setAttribute("div", "className", "title")
   }
-  vdom.children.forEach(vdomChild => render(vdomChild, dom)) // 很明显，只遍历了一层。。。
+  vdom.children.forEach(vdomChild => render(vdomChild, dom)) // 递归
   container.appendChild(dom)
 }
 /**
