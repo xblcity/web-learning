@@ -6,6 +6,7 @@ module.exports = {
   entry: {
     test1: './src/test1',
     test2: './src/test2',
+    test3: './src/test3'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

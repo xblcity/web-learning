@@ -68,6 +68,11 @@ const ReactDOM = {
  * @return: null
  */
 function render(vdom, container) {
+  console.log('vdom是', vdom)
+  // vdom是 { nodeName: "div", attributes: { … }, children: Array(2), key: undefined }
+  // test1.js: 71 vdom是 hello
+  // test1.js: 71 vdom是 { nodeName: "span", attributes: { … }, children: Array(1), key: undefined }
+  // test1.js: 71 vdom是 world!
   if (_.isString(vdom) || _.isNumber(vdom)) {
     container.innerText = container.innerText + vdom // ????
     return

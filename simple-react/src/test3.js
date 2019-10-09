@@ -44,11 +44,25 @@ const ReactDOM = {
   render
 }
 
+// 组件的render方法，也是ReactDOM的render方法
 function render(vdom, container) {
+  console.log('render的vdom', vdom)
+  // attributes: { name: "count" }
+  // children: []
+  // key: undefined
+  // nodeName: ƒ A(props)
+  // __proto__: Object
   let component
-  if (_.isFunction(vdom.nodeName)) {
-    if (vdom.nodeName.prototype.render) { // 如果组件有render方法，说明是有状态组件
-      component = new vdom.nodeName(vdom.attribute) // 向组件传入props
+  if (_.isFunction(vdom.nodeName)) { // 由babel转换过后,nodeName可以是一个函数
+    if (vdom.nodeName.prototype.render) { // 如果组件有render方法，说明是有状态组件，class里面的方法是定义在prototype上面的
+      component = new vdom.nodeName(vdom.attribute) // 向组件传入props，即组件的属性
+      console.log('component', component)
+      // A:
+      // {
+      //   props: undefined,
+      //   state: {count: 1},
+      //   __proto__: Component
+      // }
     } else {
       component = vdom.nodeName(vdom.attribute) // 函数直接执行，不用使用构造函数
     }
@@ -58,6 +72,13 @@ function render(vdom, container) {
 
 // 在 render函数中分离出_render主要是为了让setState也能使用_render
 function _render(component, container) {
+  console.log(component)
+  // A:
+  // {
+  //   props: undefined,
+  //   state: {count: 1},
+  //   __proto__: Component
+  // }
   const vdom = component.render ? component.render() : component
   if (_.isString(vdom) || _.isNumber(vdom)) { // vdom不是对象而是单纯的string或者number类型变量
     container.innerText = container.innerText + vdom
@@ -119,3 +140,5 @@ ReactDOM.render(
   <A name="count" />,
   document.getElementById('root')
 )
+
+// 执行render方法，判断A是组件，生成component，并把A的属性当作props传入，再执行_render，_render先把component执行一下render方法，得到正常的DOM节点，最后
