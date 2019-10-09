@@ -83,7 +83,7 @@ function render(vdom, container) {
 }
 /**
  * @msg: 格式化(parse) vDom 的 attributes属性
- * @param {*} dom 元素
+ * @param {*} dom 元素,包含属性和值
  * @param {*} attr 属性
  * @param {*} value 属性值
  * @return: null

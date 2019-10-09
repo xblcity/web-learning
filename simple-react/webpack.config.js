@@ -26,6 +26,12 @@ module.exports = {
       title: 'simple-react',
       chunks: ['test2', 'vendors']
     }),
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      filename: 'test3.html',
+      title: '组件添加state与props',
+      chunks: ['test3', 'vendors']
+    }),
     new CleanWebpackPlugin()
   ],
   module: {
