@@ -32,6 +32,7 @@ console.log(A)
 
 console.log(<A />)
 
+// 浏览器打印结果
 // attributes: null
 // children: []
 // key: undefined
@@ -48,7 +49,7 @@ const ReactDOM = {
 
 /**
  * @msg: 将虚拟DOM转换成真实DOM
- * @param {*} vdom 虚拟DOM，也就是js里的对象, eg: {}, 自定义组件 eg: f (){}
+ * @param {*} vdom 虚拟DOM，也就是js里的对象, eg: {}, 自定义组件也是如此
  * @param {*} container 需要插入的位置，一般是一个id为app的div标签, eg: <div id="app"></div>
  * @return: null
  */
@@ -78,5 +79,5 @@ function render(vdom, container) {
   container.appendChild(dom)
 }
 
-
+// ? 没有处理dom以及其属性，所以没有成功渲染
 ReactDOM.render(<A />, document.getElementById('app'))

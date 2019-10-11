@@ -10,7 +10,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[hash:4].js'
+    filename: '[name].js'
   },
   mode: 'development',
   devtool: 'inline-source-map',
