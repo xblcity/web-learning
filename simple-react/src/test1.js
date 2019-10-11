@@ -84,7 +84,7 @@ function render(vdom, container) {
     // 示例
     // setAttribute(<div></div>, "className", "title")  ==> 把attr转换成标准属性，并放在<div></div>里面
   }
-  vdom.children.length > 0 && vdom.children.forEach(vdomChild => render(vdomChild, dom)) // ? 递归,render执行了数次
+  vdom.children && vdom.children.length > 0 && vdom.children.forEach(vdomChild => render(vdomChild, dom)) // ? 递归,render执行了数次
   container.appendChild(dom)
 }
 /**

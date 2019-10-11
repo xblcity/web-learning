@@ -37,7 +37,7 @@ function Component(props) {
 
 Component.prototype.setState = function (updateObj) {
   this.state = Object.assign({}, this.state, updateObj)
-  _render(this) // 重新渲染
+  _render(this, document.getElementById('app')) // 重新渲染
 }
 
 const ReactDOM = {
@@ -46,6 +46,7 @@ const ReactDOM = {
 
 // 组件的render方法，也是ReactDOM的render方法
 function render(vdom, container) {
+  console.log(`container`, container)
   console.log('render的vdom', vdom)
   // attributes: { name: "count" }
   // children: []
@@ -55,16 +56,16 @@ function render(vdom, container) {
   let component
   if (_.isFunction(vdom.nodeName)) { // 由babel转换过后,nodeName可以是一个函数
     if (vdom.nodeName.prototype.render) { // 如果组件有render方法，说明是有状态组件，class里面的方法是定义在prototype上面的
-      component = new vdom.nodeName(vdom.attribute) // 向组件传入props，即组件的属性
+      component = new vdom.nodeName(vdom.attributes) // ? 向组件传入props，即组件的属性
       console.log('component', component)
       // A:
       // {
-      //   props: undefined,
-      //   state: {count: 1},
+      //   props: {name: "count"}
+      //   state: {count: 1}
       //   __proto__: Component
       // }
     } else {
-      component = vdom.nodeName(vdom.attribute) // 函数直接执行，不用使用构造函数
+      component = vdom.nodeName(vdom.attributes) // 无状态组件，函数直接执行，不用使用构造函数
     }
   }
   component ? _render(component, container) : _render(vdom, container)
@@ -72,21 +73,40 @@ function render(vdom, container) {
 
 // 在 render函数中分离出_render主要是为了让setState也能使用_render
 function _render(component, container) {
-  console.log(component)
   // A:
   // {
-  //   props: undefined,
-  //   state: {count: 1},
+  //   props: {name: "count"}
+  //   state: {count: 1}
   //   __proto__: Component
   // }
   const vdom = component.render ? component.render() : component
+  console.log('vdom或者render', vdom)
+  // attributes: null
+  // children: [
+  //   { nodeName: "button", attributes: { … }, children: Array(1), key: undefined },
+  //   { nodeName: "div", attributes: null, children: Array(3), key: undefined } ]
+  // __proto__: Array(0)
+  // key: undefined
+  // nodeName: "div"
   if (_.isString(vdom) || _.isNumber(vdom)) { // vdom不是对象而是单纯的string或者number类型变量
     container.innerText = container.innerText + vdom
+    return // ! 字符串直接处理就返回
   }
   const dom = document.createElement(vdom.nodeName)
-  for (let attr in dom.attributes) {
-    setAttribute(dom, attr)
+  for (let attr in vdom.attributes) {
+    setAttribute(dom, attr, vdom.attributes[attr])
   }
+  // ? 之前忘记填写了的
+  console.log(`vdom的子节点`, vdom.children)
+  // vdom.children && vdom.children.length > 0 && vdom.children.forEach(vdomChild => { if (vdomChild.children) { _render(vdomChild, dom) } }) // ? 递归,render执行了数次
+  vdom.children && vdom.children.length > 0 && vdom.children.forEach(vdomChild => _render(vdomChild, dom))
+  if (component.container) { // setState进入这个逻辑
+    component.container.innerHTML = null
+    component.container.appendChild(dom)
+    return
+  }
+  component.container = container // 第一次渲染给component增加一个container属性，之后再次验证时，就可以知道该组件不是第一次渲染了
+  container.appendChild(dom)
 }
 
 // 处理DOM的属性
@@ -95,6 +115,7 @@ function setAttribute(dom, attr, value) {
     attr = 'class'
   }
   if (attr.match(/on\w+/)) { // w 匹配字母或数字或下划线或汉字 等价于 '[^A-Za-z0-9_]'
+    console.log('事件的名字是', attr, '事件节点是', dom, 'value是', value)
     const eventName = attr.toLowerCase().substr(2)
     dom.addEventListener(eventName, value)
   } else if (attr === 'style') { // style = {{width: 100, backgroundColor: 'red'}}
@@ -122,6 +143,7 @@ class A extends Component {
   }
 
   click() {
+    console.log('click事件触发')
     this.setState({
       count: ++this.state.count
     })
@@ -139,7 +161,7 @@ class A extends Component {
 
 ReactDOM.render(
   <A name="count" />,
-  document.getElementById('root')
+  document.getElementById('app')
 )
 
 // 执行render方法，判断A是组件，生成component，并把A的属性当作props传入，再执行_render，_render先把component执行一下render方法，得到正常的DOM节点，最后
