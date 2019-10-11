@@ -21,11 +21,14 @@ function createElement(tag, attr, ...child) {
 const element = (
   <div className="title">
     hello
-    <span className="content">
+    <div className="content">
       world!
-    </span>
+      <span>你好</span>
+    </div>
   </div>
 )
+
+const simpleElement = 123
 
 // @babel/preset-react转换的结果, element(即jsx表示的节点)会被@babel/preset-react转换成virtual node
 // var element = React.createElement("div", {
@@ -34,7 +37,7 @@ const element = (
 //   className: "content"
 // }, "world!"));
 
-// 经过createElement转换的结果打印
+// ** 经过React.createElement()转换的结果在浏览器的控制台打印
 console.log(element)
 // 在浏览器中打印如下：
 // {
@@ -51,11 +54,12 @@ console.log(element)
 //   key: undefined
 //   nodeName: "div"
 // }
+console.log(simpleElement)
 
 /*
   =============================================================
 */
-// ReactDOM的render方法把 所有的virtual node 转换成真实DOM插入到html中，一般一个app只用一次
+// ** ReactDOM的render方法把 所有的virtual node 转换成真实DOM插入到html中，一般一个app只用一次
 
 const ReactDOM = {
   render
@@ -63,27 +67,24 @@ const ReactDOM = {
 
 /**
  * @msg: 将虚拟DOM转换成真实DOM
- * @param {*} vdom 虚拟DOM，也就是js里的对象, eg: {}
+ * @param {*} vdom 虚拟DOM，也就是js里的对象, eg: { attribute: {}, children: [], nodeName: 'div', key: undefined}
  * @param {*} container 需要插入的位置，一般是一个id为app的div标签, eg: <div id="app"></div>
  * @return: null
  */
 function render(vdom, container) {
   console.log('vdom是', vdom)
   // vdom是 { nodeName: "div", attributes: { … }, children: Array(2), key: undefined }
-  // test1.js: 71 vdom是 hello
-  // test1.js: 71 vdom是 { nodeName: "span", attributes: { … }, children: Array(1), key: undefined }
-  // test1.js: 71 vdom是 world!
-  if (_.isString(vdom) || _.isNumber(vdom)) {
-    container.innerText = container.innerText + vdom // ????
+  if (_.isString(vdom) || _.isNumber(vdom)) { // 比如说，jsx只是一个字符串或者数字
+    container.innerText = container.innerText + vdom
     return
   }
   const dom = document.createElement(vdom.nodeName)  // 根节点创建一个vNode根节点的tagName,即<div></div>
   for (let attr in vdom.attributes) {
     setAttribute(dom, attr, vdom.attributes[attr])
     // 示例
-    // setAttribute("div", "className", "title")
+    // setAttribute(<div></div>, "className", "title")  ==> 把attr转换成标准属性，并放在<div></div>里面
   }
-  vdom.children.forEach(vdomChild => render(vdomChild, dom)) // 递归
+  vdom.children.length > 0 && vdom.children.forEach(vdomChild => render(vdomChild, dom)) // ? 递归,render执行了数次
   container.appendChild(dom)
 }
 /**
