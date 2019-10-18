@@ -6,7 +6,8 @@ module.exports = {
   entry: {
     test1: './src/test1',
     test2: './src/test2',
-    test3: './src/test3'
+    test3: './src/test3',
+    test3: './src/test4',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -32,6 +33,12 @@ module.exports = {
       filename: 'test3.html',
       title: '组件添加state与props',
       chunks: ['test3', 'vendors']
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      filename: 'test3.html',
+      title: '组件添加生命周期',
+      chunks: ['test4', 'vendors']
     }),
     new CleanWebpackPlugin()
   ],
