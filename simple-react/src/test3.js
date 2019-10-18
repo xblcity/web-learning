@@ -44,7 +44,7 @@ const ReactDOM = {
   render
 }
 
-// 组件的render方法，也是ReactDOM的render方法
+// ReactDOM的render方法，并非组件自身的render
 function render(vdom, container) {
   console.log(`container`, container)
   console.log('render的vdom', vdom)
@@ -56,7 +56,7 @@ function render(vdom, container) {
   let component
   if (_.isFunction(vdom.nodeName)) { // 由babel转换过后,nodeName可以是一个函数
     if (vdom.nodeName.prototype.render) { // 如果组件有render方法，说明是有状态组件，class里面的方法是定义在prototype上面的
-      component = new vdom.nodeName(vdom.attributes) // ? 向组件传入props，即组件的属性
+      component = new vdom.nodeName(vdom.attributes) // 这一步只是处理了vdom的
       console.log('component', component)
       // A:
       // {
@@ -93,14 +93,14 @@ function _render(component, container) {
     return // ! 字符串直接处理就返回
   }
   const dom = document.createElement(vdom.nodeName)
+  // 1.属性格式化成html支持的格式，vdom到dom的重要一步
   for (let attr in vdom.attributes) {
     setAttribute(dom, attr, vdom.attributes[attr])
   }
-  // ? 之前忘记填写了的
-  console.log(`vdom的子节点`, vdom.children)
-  // vdom.children && vdom.children.length > 0 && vdom.children.forEach(vdomChild => { if (vdomChild.children) { _render(vdomChild, dom) } }) // ? 递归,render执行了数次
-  vdom.children && vdom.children.length > 0 && vdom.children.forEach(vdomChild => _render(vdomChild, dom))
-  if (component.container) { // setState进入这个逻辑
+  // 2.对于vdom的children，也就是dom的子元素，也需要格式化，父dom更加完善了
+  vdom.children && vdom.children.length && vdom.children.forEach(vdomChild => _render(vdomChild, dom)) // 递归
+  // 3.对于setState的处理
+  if (component.container) {
     component.container.innerHTML = null
     component.container.appendChild(dom)
     return
@@ -164,4 +164,4 @@ ReactDOM.render(
   document.getElementById('app')
 )
 
-// 执行render方法，判断A是组件，生成component，并把A的属性当作props传入，再执行_render，_render先把component执行一下render方法，得到正常的DOM节点，最后
+// 执行render方法，判断A是组件，生成component，并把A的属性当作props传入，再执行_render，_render先把component执行一下render方法，得到正常的DOM节点，最后递归子节点，生成完整DOM
