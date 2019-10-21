@@ -55,8 +55,9 @@ function render(vdom, container) {
   // __proto__: Object
   let component
   if (_.isFunction(vdom.nodeName)) { // 由babel转换过后,nodeName可以是一个函数
-    if (vdom.nodeName.prototype.render) { // 如果组件有render方法，说明是有状态组件，class里面的方法是定义在prototype上面的
-      component = new vdom.nodeName(vdom.attributes) // 这一步只是处理了vdom的
+    if (vdom.nodeName.prototype.render) { // 如果组件有render方法，说明是有状态组件，class里面的方法是定义在prototype上面的,但是为什么不加prototype就会报错呢？因为A是一个构造函数类
+      component = new vdom.nodeName(vdom.attributes) // 这一步只是处理了vdom的属性，处理成props，component是vdom.nodeName这个构造函数的实例，所以可以直接调用render，这也是new操作符的功劳了
+      // 由于继承自Component构造函数，也就是说this.props = vdom.attributes
       console.log('component', component)
       // A:
       // {
@@ -79,8 +80,8 @@ function _render(component, container) {
   //   state: {count: 1}
   //   __proto__: Component
   // }
-  const vdom = component.render ? component.render() : component
-  console.log('vdom或者render', vdom)
+  const vdom = component.render ? component.render() : component // 这里的component是实例，可以直接调用构造函数上面的方法
+  console.log('vdom的render', vdom)  // ! 这里不明白为什么render()之后就成这个样子了
   // attributes: null
   // children: [
   //   { nodeName: "button", attributes: { … }, children: Array(1), key: undefined },
@@ -90,7 +91,7 @@ function _render(component, container) {
   // nodeName: "div"
   if (_.isString(vdom) || _.isNumber(vdom)) { // vdom不是对象而是单纯的string或者number类型变量
     container.innerText = container.innerText + vdom
-    return // ! 字符串直接处理就返回
+    return //  字符串直接处理就返回
   }
   const dom = document.createElement(vdom.nodeName)
   // 1.属性格式化成html支持的格式，vdom到dom的重要一步

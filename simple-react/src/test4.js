@@ -4,8 +4,10 @@
  * @Author:
  * @Date: 2019-10-11 16:54:41
  * @LastEditors:
- * @LastEditTime: 2019-10-18 17:29:29
+ * @LastEditTime: 2019-10-21 16:22:14
  */
+
+// 参考这里 https://github.com/hujiulong/blog/issues/5
 
 import _ from 'lodash'
 import { decamelize } from 'humps'
@@ -18,7 +20,7 @@ const React = {
 function createElement(tag, attr, ...child) {
   return {
     nodeName: tag,
-    attributes: attr,
+    attrs: attr,
     children: child, // 数组
     key: undefined
   }
@@ -32,105 +34,104 @@ function Component(props) {
 
 Component.prototype.setState = function (updateObj) {
   this.state = Object.assign({}, this.state, updateObj)
-  _render(this, document.getElementById('app')) // 重新渲染
+  renderComponent(this); // 重新渲染
 }
 
 const ReactDOM = {
   render
 }
 
-function render(vdom, container) {
-  let component
-  if (_.isFunction(vdom.nodeName)) { // 由babel转换过后,nodeName可以是一个函数
-    if (vdom.nodeName.prototype.render) { // 如果组件有render方法，说明是有状态组件，class里面的方法是定义在prototype上面的
-      component = new vdom.nodeName(vdom.attributes) // 这一步只是处理了vdom的
-      console.log('component', component)
-      // A:
-      // {
-      //   props: {name: "count"}
-      //   state: {count: 1}
-      //   __proto__: Component
-      // }
-    } else {
-      component = vdom.nodeName(vdom.attributes) // 无状态组件，函数直接执行，不用使用构造函数
+// 在调用ReactDOM.render(<B/>, document.getElementById('app'))的时候，<B/>已经被转换成document.createElement(B，null)的格式，结果为,{nodeName: B, attrs: null}即虚拟DOM
+function render(vnode, container) {
+  return container.appendChild(_render(vnode));
+}
+
+// 渲染真实dom
+function _render(vnode) {
+  if (vnode === undefined || vnode === null || typeof vnode === 'boolean') vnode = '';
+  if (typeof vnode === 'number') vnode = String(vnode);
+  if (typeof vnode === 'string') {
+    let textNode = document.createTextNode(vnode);
+    return textNode;
+  }
+
+  if (typeof vnode.nodeName === 'function') {
+    const component = createComponent(vnode.nodeName, vnode.attrs); // 以B为例, createComponent(B, null) ===> {base: div, props: null, state: {count: 1}}
+    console.log('createComponent', component)
+    setComponentProps(component, vnode.attrs);
+    return component.base;
+  }
+
+  const dom = document.createElement(vnode.nodeName)
+
+  if (vnode.attrs) {
+    Object.keys(vnode.attrs).forEach(key => {
+      const value = vnode.attrs[key];
+      setAttribute(dom, key, value);
+      console.log('层层递归', dom, key, value)
+    });
+  }
+  vnode.children.forEach(child => render(child, dom));
+
+  return dom;
+}
+
+// 创建组件
+function createComponent(component, props) {
+  let inst;
+  // 如果是类定义组件，则直接返回实例
+  if (component.prototype && component.prototype.render) {
+    inst = new component(props);
+    console.log('组件实例化', inst)  // {base: div, props: null, state: {count: 1}}
+    // 如果是函数定义组件，则将其扩展为类定义组件
+  } else {
+    inst = new Component(props);
+    inst.constructor = component;
+    inst.render = function () {
+      return this.constructor(props);
     }
   }
-  component ? _render(component, container) : _render(vdom, container)
+  return inst;
 }
 
-// react生命周期分为三个部分，生成，存在，销毁
-// 生命周期放在vdom转换成dom的过程中，需要改造之前的_render方法
-
-function _render(component, container) {
-  console.log(`_render的component`, component)
-  setProps(component)
-  renderComponent(component)
-  // return component.base
-
-  const vdom = component.render ? component.render() : component
-  console.log('vdom或者render', vdom)
-  // attributes: null
-  // children: [
-  //   { nodeName: "button", attributes: { … }, children: Array(1), key: undefined },
-  //   { nodeName: "div", attributes: null, children: Array(3), key: undefined } ]
-  // __proto__: Array(0)
-  // key: undefined
-  // nodeName: "div"
-  if (_.isString(vdom) || _.isNumber(vdom)) { // vdom不是对象而是单纯的string或者number类型变量
-    container.innerText = container.innerText + vdom
-    return // ! 字符串直接处理就返回
+// set props
+// 其中可以实现componentWillMount，componentWillReceiveProps两个生命周期方法
+function setComponentProps(component, props) {
+  if (!component.base) {
+    if (component.componentWillMount) component.componentWillMount();
+  } else if (component.componentWillReceiveProps) {
+    component.componentWillReceiveProps(props);
   }
-  const dom = document.createElement(vdom.nodeName)
-  // 1.属性格式化成html支持的格式，vdom到dom的重要一步
-  for (let attr in vdom.attributes) {
-    setAttribute(dom, attr, vdom.attributes[attr])
-  }
-  // 2.对于vdom的children，也就是dom的子元素，也需要格式化，父dom更加完善了
-  vdom.children && vdom.children.length && vdom.children.forEach(vdomChild => _render(vdomChild, dom)) // 递归
-  // 3.对于setState的处理
-  if (component.container) {
-    component.container.innerHTML = null
-    component.container.appendChild(dom)
-    return
-  }
-  component.container = container // 第一次渲染给component增加一个container属性，之后再次验证时，就可以知道该组件不是第一次渲染了
-  container.appendChild(dom)
+  component.props = props;
+  renderComponent(component);
 }
 
-
-
-function setProps(component) {
-  if (component && component.componentWillMount) {
-    component.componentWillMount()
-  } else if (component.base && component.componentWillReceiveProps) {
-    component.componentWillReceiveProps(component.props) // ??
-  }
-}
-
+// renderComponent方法用来渲染组件，setState方法中会直接调用这个方法进行重新渲染，
+// 在这个方法里可以实现componentWillUpdate，componentDidUpdate，componentDidMount几个生命周期方法。
 function renderComponent(component) {
-  // 需要接受参数，确认是否需要更新视图
-  if (component.base && component.shouldComponentUpdate) {
-    const bool = component.shouldComponentUpdate(component.props, component.state) // 
-    if (!bool && bool !== undefined) { // !why?
-      return false // 视图不更新
-    }
-  }
+  let base;
+  const renderer = component.render();
+
   if (component.base && component.componentWillUpdate) {
-
-  }
-  const rendered = component.render ? component.render() : '' // ??
-  console.log(rendered)
-  const base = '_render(rendered)'  // ??
-  // 两个需要渲染的生命周期
-  if (component.base && componentDidUpdate) {
-    component.componentDidUpdate()
-  } else if (component.base && componentDidMount) {
-    component.componentDidMount()
+    component.componentWillUpdate();
   }
 
-  component.base = base // 标识符
+  base = _render(renderer);
+
+  if (component.base) {
+    if (component.componentDidUpdate) component.componentDidUpdate();
+  } else if (component.componentDidMount) {
+    component.componentDidMount();
+  }
+
+  if (component.base && component.base.parentNode) {
+    component.base.parentNode.replaceChild(base, component.base);
+  }
+
+  component.base = base;
+  base._component = component;
+
 }
-
 
 
 // 处理DOM的属性
@@ -139,7 +140,6 @@ function setAttribute(dom, attr, value) {
     attr = 'class'
   }
   if (attr.match(/on\w+/)) { // w 匹配字母或数字或下划线或汉字 等价于 '[^A-Za-z0-9_]'
-    console.log('事件的名字是', attr, '事件节点是', dom, 'value是', value)
     const eventName = attr.toLowerCase().substr(2)
     dom.addEventListener(eventName, value)
   } else if (attr === 'style') { // style = {{width: 100, backgroundColor: 'red'}}
@@ -157,9 +157,9 @@ function setAttribute(dom, attr, value) {
 }
 
 class A extends Component {
-  componentWillReceiveProps(props) {
-    console.log('componentWillReceiveProps')
-  }
+  // componentWillReceiveProps(props) {
+  //   console.log('componentWillReceiveProps')
+  // }
 
   render() {
     return (
@@ -177,24 +177,24 @@ class B extends Component {
   }
 
   componentWillMount() {
-    console.log('componentWillMount')
+    console.log('生命周期之componentWillMount')
   }
 
   componentDidMount() {
-    console.log('componentDidMount')
+    console.log('生命周期之componentDidMount')
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('shouldComponentUpdate', nextProps, nextState)
+    console.log('生命周期之shouldComponentUpdate', nextProps, nextState)
     return true
   }
 
   componentWillUpdate() {
-    console.log('componentWillUpdate')
+    console.log('生命周期之componentWillUpdate')
   }
 
   componentDidUpdate() {
-    console.log('componentDidUpdate')
+    console.log('生命周期之componentDidUpdate')
   }
 
   click() {
@@ -204,7 +204,7 @@ class B extends Component {
   }
 
   render() {
-    console.log('render')
+    console.log('B组件的render方法', 'render')
     return (
       <div>
         <button onClick={this.click.bind(this)}>Click Me!</button>
@@ -216,10 +216,11 @@ class B extends Component {
 
 ReactDOM.render(
   <B />,
-  document.getElementById('root')
-)
-
-ReactDOM.render(
-  <A name="count" />,
   document.getElementById('app')
 )
+// 被jsx转换成 ReactDOM.render(React.createElement(B, null), document.getElementById('app'));
+
+// ReactDOM.render(
+//   <A name="count" />,
+//   document.getElementById('app')
+// )
