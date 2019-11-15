@@ -1,9 +1,17 @@
-// {
-//   "presets": [
-//       ["@babel/preset-env", {
-//           "targets": {
-//               "browsers": ["last 2 versions"]
-//           }
-//       }]
-//   ]
-// }
+{
+  "presets": [
+      ["@babel/preset-env", {
+          "targets": {
+              "browsers": ["last 2 versions"]
+          }
+      }],
+      [
+        "@babel/preset-react",
+        {
+          "pragma": "React.createElement", // default pragma is React.createElement
+          "pragmaFrag": "React.Fragment", // default is React.Fragment
+          "throwIfNamespace": false // defaults to true
+        }
+      ]
+  ]
+}
