@@ -16,17 +16,12 @@
 
 ## learn2 使用webpack打包jsx语法的js文件
 
-结上部分  
+安装一个用于解析jsx语法的babel插件 
 - yarn add @babel-preset-react
 - 配置.babelrc的plugin数组，添加如下
 ```js
 {
   "presets": [
-      ["@babel/preset-env", {
-          "targets": {
-              "browsers": ["last 2 versions"]
-          }
-      }],
       [
         "@babel/preset-react",
         {
@@ -40,33 +35,20 @@
 ```
 注意，上面的是copy官网的配置，在@babel/preset-react 中把pragma以及 pragmaFrag字段改成后面注释的字段
 
+#### js文件注意点
 docuemnt.getElementById()要与html的节点id对应，其次,引入的ReactDOM注意大小写, om大小写都可以
 
-- webpack更新loader选项 
-```js
-{
-  test: /\.m?js$/,
-  exclude: /(node_modules|bower_components)/,
-  use: {
-    loader: 'babel-loader',
-    options: {
-      presets: ['@babel/preset-env']
-    }
-  }
-```
+#### webpack配置文件注意点
+- webpack容易写错的部分，output的是filename以及path，不是pathname
+- webpack module rules 里面书写的是loaders的规则，是module底下而非plugin下面，也不是loader下面
+- 注意：rules之下的规则，test后面跟正则表达式，就不用加双引号了！！
 
-使用url-loader以及include，Path.resolve()改进loader
+#### 构建时注意点
+- 构建完成的script文件要放在id为app的div下面
 
-webpack容易写错的部分，output的是filename以及path，不是pathname  
-webpack module rules 里面书写的是loaders的规则，是module底下而非plugin下面，也不是loader下面
+#### 其他建议
+- 如果使用了babel-loader处理包含jsx语法的js文件，那就必须要配置.babelrc里面的preset选项，preset-react，但是preset-env可以配置，也可以配置，作用是选择要兼容的程度
+- 使用url-loader以及include，path.resolve()改进loader
 
-注意：rules之下的规则，test后面跟正则表达式，就不用加双引号了！！
-
-构建完成的script文件要放在id为app的div下面
-
-如果使用了babel-loader处理包含jsx语法的js文件，那就必须要配置.babelrc里面的preset选项，preset-react，但是preset-env可以配置，也可以配置，作用是选择要兼容的程度
-
-使用Img添加图片，webpack会使用url-loader进行解析
-```js
-
-```
+#### 继续添加插件
+- 使用Img添加图片，webpack会使用url-loader进行解析
