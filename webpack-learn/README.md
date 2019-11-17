@@ -1,6 +1,6 @@
 # 使用webpack定制开发环境
 
-## learn1 使用webpack打包js与less文件
+## 1. learn1 使用webpack打包js与less文件
 
 - npm init -y
 - yarn add webpack css-loader style-loader less less-loader
@@ -14,7 +14,7 @@
 - yarn add @babel/core babel-loader @babel/preset-env
 - 配置babel-loader，然后新建.babelrc配置项，告诉babal需要兼容到何种程度等等
 
-## learn2 使用webpack打包jsx语法的js文件
+## 2. learn2 使用webpack打包jsx语法的js文件，并使用live reloading
 
 安装一个用于解析jsx语法的babel插件 
 - yarn add @babel-preset-react
@@ -48,19 +48,19 @@ docuemnt.getElementById()要与html的节点id对应，其次,引入的ReactDOM�
 - 构建完成的script文件要放在id为app的div下面
 
 #### 其他建议
-- 如果使用了babel-loader处理包含jsx语法的js文件，那就必须要配置.babelrc里面的preset选项，preset-react，但是preset-env可以配置，也可以配置，作用是选择要兼容的程度
-- 使用url-loader以及include，path.resolve()改进loader
-
-#### 继续添加插件
-- 使用Img添加图片，webpack会使用url-loader进行解析
+- 如果使用了babel-loader处理包含jsx语法的js文件，那就必须要配置.babelrc里面的preset选项，preset-react，但是preset-env可以配置，也可以配置，作用是选择要兼容浏览器支持语法的程度
+- 使用url-loader以及include(loader处理文件的范围)，path.resolve()改进loader
 
 #### 在package.json加入webpack命令
 - 在script直接添加 `build: webpack --config webpack.config.js`这段即可，前提是需要安装webpack-cli包以及全局安装过webpack
 
-## 添加插件html-webpack-plugin
+### 继续添加插件 url-loader
+- 使用Img添加图片，webpack会使用url-loader进行解析
+
+### 添加插件html-webpack-plugin
 这个可以在build之后生成html文件，并自动引入bundle包，且可以指定要用的模板
 
-## 通过webpack-dev-server 进行实时更新
+### 通过 webpack-dev-server 进行实时更新
 这里先分离出dev以及build两个webpack配置文件，并在package.json指定dev以及Build命令所用的配置
 
 `yarn add webpack-dev-server` 并在webpack.config.dev.js配置devServer选项(这个可以不用配置，有需要再配置)
