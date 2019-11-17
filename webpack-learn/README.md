@@ -42,6 +42,7 @@ docuemnt.getElementById()要与html的节点id对应，其次,引入的ReactDOM�
 - webpack容易写错的部分，output的是filename以及path，不是pathname
 - webpack module rules 里面书写的是loaders的规则，是module底下而非plugin下面，也不是loader下面
 - 注意：rules之下的规则，test后面跟正则表达式，就不用加双引号了！！
+- 添加mode，让webpack打包时进行相应的优化
 
 #### 构建时注意点
 - 构建完成的script文件要放在id为app的div下面
@@ -52,3 +53,12 @@ docuemnt.getElementById()要与html的节点id对应，其次,引入的ReactDOM�
 
 #### 继续添加插件
 - 使用Img添加图片，webpack会使用url-loader进行解析
+
+#### 在package.json加入webpack命令
+- 在script直接添加 `build: webpack --config webpack.config.js`这段即可，前提是需要安装webpack-cli包以及全局安装过webpack
+
+## 添加插件html-webpack-plugin
+这个可以在build之后生成html文件，并自动引入bundle包，且可以指定要用的模板
+
+## 通过webpacl-dev-server 进行实时更新
+这里先分离出dev以及build两个webpack配置文件，并在package.json指定dev以及Build命令所用的配置

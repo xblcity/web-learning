@@ -1,8 +1,20 @@
 const path = require('path')
+// const fs = require('fs')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const srcRoot = path.resolve(__dirname, 'src')
 
+// 为多页面应用生成入口文件
+// function getEntry() {
+//   let entryMap = {}
+//   fs.readdirSync().forEach((pathname) => {
+//     let fullPathName = path.resolve(pageDir, pathname)
+//     let stat
+//   })
+// }
+
 module.exports = {
+  mode: 'development',
   entry: {
     app: './src/app.js'
   },
@@ -28,5 +40,10 @@ module.exports = {
         include: srcRoot
       }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './index.html'
+    })
+  ]
 }
