@@ -60,5 +60,16 @@ docuemnt.getElementById()要与html的节点id对应，其次,引入的ReactDOM�
 ## 添加插件html-webpack-plugin
 这个可以在build之后生成html文件，并自动引入bundle包，且可以指定要用的模板
 
-## 通过webpacl-dev-server 进行实时更新
+## 通过webpack-dev-server 进行实时更新
 这里先分离出dev以及build两个webpack配置文件，并在package.json指定dev以及Build命令所用的配置
+
+`yarn add webpack-dev-server` 并在webpack.config.dev.js配置devServer选项(这个可以不用配置，有需要再配置)
+
+在script中配置`webpack-dev-server --open`,,***要注意的是，需要把webppack这个命令删除，直接替换成webpack-dev-server***
+
+```js
+// before
+webpack --config webpack.config.dev.js --mode=development
+// after
+webpack-dev-server --open --config webpack.config.dev.js --mode=development
+```

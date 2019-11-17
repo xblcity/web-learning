@@ -15,6 +15,9 @@ const srcRoot = path.resolve(__dirname, 'src')
 
 module.exports = {
   mode: 'development',
+  // devServer: {
+  //   contentBase: './dist'
+  // },
   entry: {
     app: './src/app.js'
   },

@@ -5,6 +5,7 @@ import timg from './timg.jpg'
 
 const element = <div>
   <div>这是react组件</div>
+  <div>下面是一个图片</div>
   <img src={timg} alt="图片"/>
 </div>
 
