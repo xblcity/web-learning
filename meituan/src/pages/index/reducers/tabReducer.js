@@ -8,7 +8,11 @@ const addTodo = (state, actions) => {
   }
 }
 
-const tabReducer = (state={num:0}, action) => {
+const initState = {
+  num: 1
+}
+
+const tabReducer = (state=initState, action) => {
   switch(action.type) {
     case ADD_TODO: return addTodo(state, action)
     default: return state
