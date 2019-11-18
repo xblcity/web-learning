@@ -16,6 +16,8 @@ yarn add redux react-redux html-webpack-plugin webpack-dev-server
 
 使用reset.css初始化样式
 
+使用rem: 根据不同设备width设置不同rem，同时添加resize()事件  
+
+在less中 书写px to rem 函数
+
 ### tab开发
-
-
