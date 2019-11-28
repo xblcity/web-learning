@@ -12,7 +12,7 @@
 现在我们想把ES6语法打包出更多浏览器支持ES5语法(或一些ES6语法)，需要
 
 - yarn add @babel/core babel-loader @babel/preset-env
-- 配置babel-loader，然后新建.babelrc配置项，告诉babal需要兼容到何种程度等等
+- 配置babel-loader，然后新建.babelrc配置项，告诉babel需要兼容到何种程度等等
 
 ## 2. learn2 使用webpack打包jsx语法的js文件，并使用live reloading
 
@@ -40,7 +40,7 @@ docuemnt.getElementById()要与html的节点id对应，其次,引入的ReactDOM�
 
 #### webpack配置文件注意点
 - webpack容易写错的部分，output的是filename以及path，不是pathname
-- webpack module rules 里面书写的是loaders的规则，是module底下而非plugin下面，也不是loader下面
+- webpack module rules 里面书写的是loader的规则，是module底下而非plugin下面，也不是loader下面
 - 注意：rules之下的规则，test后面跟正则表达式，就不用加双引号了！！
 - 添加mode，让webpack打包时进行相应的优化
 
@@ -72,4 +72,26 @@ docuemnt.getElementById()要与html的节点id对应，其次,引入的ReactDOM�
 webpack --config webpack.config.dev.js --mode=development
 // after
 webpack-dev-server --open --config webpack.config.dev.js --mode=development
+```
+
+### babel也可以把options直接写在module的rules里面,省略.babelrc文件
+
+要注意的是cacheDirectory选项是webpack babel-loader独有的，不能写在.babelrc的配置文件里面
+
+```js
+module: {
+  rules: [
+    {
+      test: /\.js$/,
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react'],
+          cacheDirectory: true
+        }
+      }],
+      include: srcRoot
+    }
+  ]
+},
 ```

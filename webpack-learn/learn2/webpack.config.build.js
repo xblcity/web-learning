@@ -20,7 +20,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    // publicPath: 'http:/baidu.com/static/'
   },
   module: {
     rules: [
