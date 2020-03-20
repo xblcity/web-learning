@@ -1,8 +1,15 @@
 # web-learning
 
-实践
+实践部分
+
+参照网上一些比较优秀的轮子，加上自己的思考再实践一遍
 
 - 原生 js 实现一些功能 [native-js](https://github.com/xblcity/web-learning/tree/master/native-js)
+
+  - 图片上传(待做)
+  - 瀑布流(待做)
+  - h5抽奖(待做)
+  - 封装数据请求(待做)
 
 - webpack 从零配置 react 开发环境并进行优化, 未完成 [webpack-learn](https://github.com/xblcity/web-learning/tree/master/webpack-learn)
 
