@@ -1,24 +1,17 @@
 # web-learning
 
-实践部分
+参照网上一些比较优秀的轮子，加上自己的思考再实践一遍。
 
-参照网上一些比较优秀的轮子，加上自己的思考再实践一遍
+- 实现图片上传 [upload](https://github.com/xblcity/web-learning/tree/master/upload)
+- 实现瀑布流 [water-fall](https://github.com/xblcity/web-learning/tree/master/water-fall)
+- H5抽奖页面(待完成...) [lottery](https://github.com/xblcity/web-learning/tree/master/lottery)
+- 封装数据请求(待完成...) [ajax](https://github.com/xblcity/web-learning/tree/master/price)
 
-- 原生 js 实现一些功能 [native-js](https://github.com/xblcity/web-learning/tree/master/native-js)
-
-  - 图片上传(待做)
-  - 瀑布流(待做)
-  - h5抽奖(待做)
-  - 封装数据请求(待做)
-
-- webpack 从零配置 react 开发环境并进行优化, 未完成 [webpack-learn](https://github.com/xblcity/web-learning/tree/master/webpack-learn)
+- webpack 从零配置 react 开发环境并进行优化 [webpack-learn](https://github.com/xblcity/web-learning/tree/master/webpack-learn)
 
 - 从零实现简单的 React, 未完成 [simple-react](https://github.com/xblcity/web-learning/tree/master/simple-react)
 
-- react 实现美团 web app 未完成- [meituan](https://github.com/xblcity/web-learning/tree/master/meituan)
+## 参考
 
-- 使用 react 实现网页记事本功能 未完成- [note-online](https://github.com/xblcity/web-learning/tree/master/note-online)
-
-### warning
-
-> git 出现的警告，warning: LF will be replaced by CRLF in ... 因为 windows 中的换行符为 CRLF，而在 Linux 下的换行符为 LF，配置 gitattribute 文件 或者配置编辑器换行方式
+- [模拟 http restful 请求返回数据](https://www.mocky.io/v2/5cc8019d300000980a055e76)
+- [Hjs's Blog](https://hansen-hjs.github.io/blog/#/home)
