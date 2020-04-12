@@ -30,10 +30,11 @@ module.exports = {
         test: /\.less$/,
         include: srcRoot,
         use: [
-          // 'css-loader',
+          'style-loader',
           {
             loader: 'css-loader',
             options: {
+              // 开启css module
               modules: {
                 localIdentName: '[path][name]__[local]--[hash:base64:5]'
               }
