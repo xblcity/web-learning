@@ -1,18 +1,41 @@
 # 使用webpack定制开发环境
 
-## 1. learn1 使用webpack打包js与less文件
+## 1. first 使用webpack打包js,less,png,jsx文件
 
-- npm init -y
-- yarn add webpack css-loader style-loader less less-loader
-- touch app.js index.less webpack.config.js index.html
+- `npm init -y`
+
+- 安装webpack `yarn add webpack webpack-cli -D`
+
+- 安装样式相关loader `yarn add css-loader style-loader less less-loader -D`
+
+- 安装babel, react相关loader `yarn  -D`
+
+- 安装处理图片相关loader `yarn add url-loader file-loader -D`
+
+- 项目根目录新建`webpack.config.js .babelrc`配置文件
+
+- 新建`src`目录，新建`assets`存放图片，新建`app.js``index.less`
+
+- 新建 `app.js index.less webpack.config.js index.html`等文件
+
+- 书写`webpack.config.js`配置文件，在里面对`entry, output, loader`项进行配置（该文件有注释）
+
+- 在`app.js`中引入`less, png`文件
+
+- 在`index.html`中引入对应的打包后的文件
+
+注意点：
+
 - webpack配置文件需要使用Common.js模块规范，ES6模块无法使用,但是其他文件如app.js可以使用ES6语法
-- 执行webpack命令，打包出bundle.js文件，webpack可以识别出es6语法
+- 执行webpack命令，打包出bundle.js文件
 - 浏览器打开index.html，样式加载成功
 
 现在我们想把ES6语法打包出更多浏览器支持ES5语法(或一些ES6语法)，需要
 
 - yarn add @babel/core babel-loader @babel/preset-env
 - 配置babel-loader，然后新建.babelrc配置项，告诉babel需要兼容到何种程度等等
+
+## 2. 使用dev模式
 
 ## 2. learn2 使用webpack打包jsx语法的js文件，并使用live reloading
 
