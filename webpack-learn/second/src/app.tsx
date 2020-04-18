@@ -3,6 +3,7 @@ import styles from './app.less'
 import avatar from './assets/avatar.png'
 import NumberContainer from './components/NumberContainer'
 import ToDoList from './components/ToDoList'
+import Box from './components/Box'
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
       <img className={styles.pic} src={avatar} alt=""/>
       <ToDoList title="嗨~" />
       <NumberContainer />
+      <Box/>
     </div>
   )
 }
