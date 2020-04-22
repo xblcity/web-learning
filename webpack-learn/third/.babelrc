@@ -1,0 +1,30 @@
+{
+  "presets": [
+    "@babel/preset-typescript",
+    [
+      "@babel/preset-react",
+      {
+        "pragma": "React.createElement",
+        "pragmaFrag": "React.Fragment"
+      }
+    ],
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions"]
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    // [
+    //   "import",
+    //   {
+    //     "libraryName": "antd",
+    //     "libraryDirectory": "es",
+    //     "style": "true" // `style: true` 会加载 less 文件
+    //   }
+    // ],
+  ]
+}
