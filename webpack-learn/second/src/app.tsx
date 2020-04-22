@@ -1,18 +1,18 @@
 import React from 'react'
 import styles from './app.less'
 import avatar from './assets/avatar.png'
-import NumberContainer from './components/NumberContainer'
-import ToDoList from './components/ToDoList'
-import Box from './components/Box'
+// import NumberContainer from './components/NumberContainer'
+import TodoList from './components/TodoList'
+// import Box from './components/Box'
 
 const App = () => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>这是一个React应用233</div>
       <img className={styles.pic} src={avatar} alt=""/>
-      <ToDoList title="嗨~" />
-      <NumberContainer />
-      <Box/>
+      <TodoList />
+      {/* <NumberContainer /> */}
+      {/* <Box/> */}
     </div>
   )
 }

@@ -1,5 +1,6 @@
 const path = require('path')
 const srcRoot = path.resolve(__dirname, 'src')
+const modules = path.resolve(__dirname, 'node_modules')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
@@ -32,8 +33,8 @@ module.exports = {
         ],
       },
       {
-        test: /\.less$/,
-        include: srcRoot,
+        test: /\.(css|less)$/,
+        include: [modules, srcRoot],
         use: [
           'style-loader',
           {
@@ -48,7 +49,7 @@ module.exports = {
           {
             loader: 'less-loader',
             options: {
-              // javascriptEnabled: true
+              javascriptEnabled: true
             },
           },
         ],

@@ -1,4 +1,6 @@
 import React from 'react'
+import {Input, Button} from 'antd'
+import {Rate} from 'antd'
 
 interface Props {
   handleSubmit: (value: string) => void
@@ -6,19 +8,20 @@ interface Props {
 interface State {
   itemText: string
 }
-class FooterContent extends React.Component<Props, State> {
-  private inputRef = React.createRef<HTMLInputElement>()
+class TodoInput extends React.Component<Props, State> {
+  // private inputRef = React.createRef<HTMLInputElement>()
   constructor(props: Props) {
     super(props)
     this.state = {
       itemText: '',
     }
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.updateValue = this.updateValue.bind(this)
   }
   private updateValue(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ itemText: e.target.value })
   }
-  private handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  private handleSubmit() {
     if (!this.state.itemText.trim()) {
       return
     }
@@ -27,13 +30,15 @@ class FooterContent extends React.Component<Props, State> {
   }
   public render() {
     const { itemText } = this.state
-    const { updateValue, handleSubmit } = this
+    const { handleSubmit, updateValue } = this
     return (
       <div>
-        <input ref={this.inputRef} className="edit" value={this.state.itemText} />
+        <Input onChange={updateValue} value={itemText} />
+        <Button onClick={handleSubmit}>确定</Button>
+        <Rate/>
       </div>
     )
   }
 }
 
-export default FooterContent
+export default TodoInput
