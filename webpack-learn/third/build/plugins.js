@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = [
   new HtmlWebpackPlugin({
@@ -12,4 +13,5 @@ module.exports = [
     chunkFilename: '[name].[contenthash].css'
   }),
   new CleanWebpackPlugin(),
+  new BundleAnalyzerPlugin()
 ]

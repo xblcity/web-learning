@@ -8,7 +8,7 @@ const optimization = require('./optimization')
 const isDev = process.env.NODE_ENV === 'development'
 
 // console.log(process.env.NODE_ENV)
-console.log(optimization)
+// console.log(optimization)
 
 /**
  * @type {import('webpack').Configuration}
