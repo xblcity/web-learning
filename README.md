@@ -1,6 +1,6 @@
 # web-learning
 
-参照网上一些比较优秀的轮子，加上自己的思考再实践一遍。
+学习别人的轮子&实践。
 
 - toyreact，从零配置一个简单的react(正在进行中...)
 - webpack 从零配置 react-ts 开发环境并进行优化 [webpack-learn](https://github.com/xblcity/web-learning/tree/master/webpack-learn)
