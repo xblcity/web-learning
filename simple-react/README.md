@@ -20,16 +20,8 @@ package.json add "build" to "scripts"
 
 add `index.html` to dist directory
 
-
-
-
-
-
-
-
-
-
 ## 参照
+
 - [cpreact](https://github.com/MuYunyun/cpreact)
 
 
