@@ -7,12 +7,13 @@ class MyComponent extends Component {
       <div>
         <span>hello</span>
         <span>world</span>
+        <div>{this.children}</div>
       </div>
     )
   }
 }
 
-let a = <MyComponent name="a" id="ida"></MyComponent>
+let a = <MyComponent name="a" id="ida"><div>123</div></MyComponent>
 // let a = (
 //   <div>
 //     <span>hello</span>

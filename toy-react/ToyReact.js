@@ -27,6 +27,9 @@ class TextWrapper {
 }
 
 export class Component {
+  constructor() {
+    this.children = []
+  }
   setAttribute(name, value) {
     this[name] = value
   }
@@ -34,6 +37,9 @@ export class Component {
     // render生成vdom并挂载
     let vdom = this.render()
     vdom.mountTo(parent)
+  }
+  appendChild(vchild) {
+    this.children.push(vchild)
   }
 }
 
@@ -59,33 +65,33 @@ export let ToyReact = {
 
     // 处理第三个参数，第三个参数可能是节点集合，也可能是个字符串
     // 比如 <div><span></span></div> 或者 <div>123</div>
-    for (let child of children) {
-      if (typeof child === 'string') {
-        child = new TextWrapper(child)
-      }
-      element.appendChild(child)
-    }
-    return element
-    // let insertChildren = (children) => {
-    //   for (let child of children) {
-    //     if (typeof child === 'object' && child instanceof Array) {
-    //       debugger
-    //       insertChildren(child)
-    //     } else {
-    //       // if (!(child instanceof Component) && !(child instanceof ElementWrapper) && !(child instanceof TextWrapper)) {
-    //       //   debugger
-    //       //   child = String(child)
-    //       // }
-    //       if (typeof child === 'string') {
-    //         child = new TextWrapper(child)
-    //       }
-    //       // 处理 this.children
-    //       element.appendChild(child)
-    //     }
+    // for (let child of children) {
+    //   if (typeof child === 'string') {
+    //     child = new TextWrapper(child)
     //   }
+    //   element.appendChild(child)
     // }
-    // insertChildren(children)
     // return element
+    let insertChildren = (children) => {
+      for (let child of children) {
+        if (typeof child === 'object' && child instanceof Array) {
+          debugger
+          insertChildren(child)
+        } else {
+          if (!(child instanceof Component) && !(child instanceof ElementWrapper) && !(child instanceof TextWrapper)) {
+            debugger
+            child = String(child)
+          }
+          if (typeof child === 'string') {
+            child = new TextWrapper(child)
+          }
+          // 处理 this.children
+          element.appendChild(child)
+        }
+      }
+    }
+    insertChildren(children)
+    return element
   },
 
   render(vdom, element) {
