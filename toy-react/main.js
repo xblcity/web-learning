@@ -1,25 +1,26 @@
-import { ToyReact } from './ToyReact.js'
+import { ToyReact, Component } from './ToyReact.js'
 
-// class MyComponent {
-//   render() {
-//     return <div>233</div>
-//   }
-//   setAttribute(name, value) {
-//     this[name] = value
-//   }
-//   mountTo(parent) {
-//     let vdom = this.render()
-//     vdom.mountTo(parent)
-//   }
-// }
-let a = (
-  <div name="a" id="toy">
-    <span>hello</span>
-    <span>world</span>
-    <span>!</span>
-  </div>
-)
+class MyComponent extends Component {
+  render() {
+    console.log('调用component render方法')
+    return (
+      <div>
+        <span>hello</span>
+        <span>world</span>
+      </div>
+    )
+  }
+}
 
+let a = <MyComponent name="a" id="ida"></MyComponent>
+// let a = (
+//   <div>
+//     <span>hello</span>
+//     <span>world</span>
+//   </div>
+// )
+
+ToyReact.render(a, document.body)
 // main.js经过babel编译的内容
 
 // var a = ToyReact.createElement("div", {
@@ -30,4 +31,4 @@ let a = (
 // ToyReact.createElement("span", null, "world"),
 // ToyReact.createElement("span", null, "!"));
 
-document.body.appendChild(a)
+// document.body.appendChild(a)
