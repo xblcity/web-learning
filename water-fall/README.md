@@ -13,3 +13,8 @@
 - 图片请求地址为`http://via.placeholder.com/宽x高/color/color`
 
 ## HOW
+
+## 可以参考
+
+- [原生 JS 实现一个瀑布流插件](https://juejin.cn/post/6844903557699731464)
+- [waterfall](https://github.com/MuYunyun/waterfall)

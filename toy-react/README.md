@@ -1,5 +1,6 @@
 # ToyReact
 
+参考即刻时间，从零搭建toy-react
 ## 安装基础依赖
 
 ```js
