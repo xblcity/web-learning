@@ -11,3 +11,4 @@
 - 实现瀑布流(需完成...) [water-fall](https://github.com/xblcity/web-learning/tree/master/water-fall)
 - H5抽奖页面(未开始...) [lottery](https://github.com/xblcity/web-learning/tree/master/lottery)
 - 封装数据请求(未开始...) [ajax](https://github.com/xblcity/web-learning/tree/master/ajax)
+- nextjs实践 [nextjs](https://github.com/xblcity/web-learning/tree/master/nextjs)
